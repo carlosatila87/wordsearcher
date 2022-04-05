@@ -1,0 +1,27 @@
+version: '3.4'
+
+services:
+  wordservice-frontend:
+    image: wordservice-frontend:latest
+    ports:
+      - "8081:8081"
+    depends_on:
+      - wordservice-backend
+    build:
+      context: ./react-wordservice
+      dockerfile: Dockerfile
+  wordservice-backend:
+    image: wordservice-backend:latest
+    container_name: wordservice-backend
+    build:
+      context: ./WordService
+      dockerfile: Dockerfile
+    depends_on:
+      - db
+    ports:
+      - "9100:80"
+  db:
+    image: "mcr.microsoft.com/mssql/server"
+    environment:
+      MSSQL_SA_PASSWORD: "Your_password123"
+      ACCEPT_EULA: "Y"
